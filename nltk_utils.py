@@ -1,4 +1,5 @@
 import nltk
+import numpy as np
 from nltk.stem.porter import PorterStemmer
 #nltk.download('punkt')
 stemmer = PorterStemmer()
@@ -9,9 +10,13 @@ def makeToken(sentence):
 def stem(word):
     return stemmer.stem(word.lower())
 
-def bag_of_words(sentence_token,all_words):
-    pass
-
+def makeBag(sentence_token,all_words):
+    sentence_token = [stem(word) for word in sentence_token]
+    overlap = np.intersect1d(sentence_token,all_words,return_indices=True)
+    bag = np.zeros(len(all_words))
+    for i in overlap:
+        bag[i] = 1
+    return bag
 # test_sentence = "How much does shipping cost?"
 # print("Before Tokenize:",test_sentence)
 # a = makeToken(test_sentence)
